@@ -1,6 +1,7 @@
 name: Nginx deployment
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main"]
   pull_request:
@@ -60,4 +61,4 @@ jobs:
             docker remove knyaka.dev.nginx
             docker network create --driver bridge frontend || true
             docker network create --driver bridge backend || true
-            docker run -d -p 80:80 -p 443:443 --network backend --network frontend -v /etc/letsencrypt/archive/knyaka.dev/:/etc/nginx/ssl/live/knyaka.dev/ --name knyaka.dev.nginx knyaka/knyaka.dev.nginx
+            docker run -d -p 80:80 -p 443:443 --restart=always --network backend --network frontend -v /etc/letsencrypt/archive/knyaka.dev/:/etc/nginx/ssl/live/knyaka.dev/ --name knyaka.dev.nginx knyaka/knyaka.dev.nginx
